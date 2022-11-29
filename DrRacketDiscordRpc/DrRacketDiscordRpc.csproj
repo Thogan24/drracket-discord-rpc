@@ -5,7 +5,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>DrRacketRpc</StartupObject>
+    <Product>DrRacket Discord RPC</Product>
+    <Description> Discord RPC for DrRacket</Description>
+    <Company>Tyler Hogan and Krish Arora</Company>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DiscordRichPresence" Version="1.1.3.18" />
