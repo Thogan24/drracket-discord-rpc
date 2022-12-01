@@ -5,10 +5,12 @@ public class DrRacketRpc
 {
     static DiscordRpcClient? client;
     static RichPresence? rp;
-    static string windowName;
-    static string details;
-    public static void Main()
+    static string? windowName;
+    static string? details;
+    static bool drRacketIsOpen;
+    static DateTime drRacketOpened;
 
+    public static void Main()
     {
         client = new DiscordRpcClient("1047212817427726419");
         client.Initialize();
@@ -25,6 +27,11 @@ public class DrRacketRpc
         {
             if (Process.GetProcessesByName("DrRacket").Length > 0)
             {
+                if(!drRacketIsOpen)
+                {
+                    drRacketOpened = DateTime.UtcNow;
+                    drRacketIsOpen = true;
+                }
                 Process racketProcess = Process.GetProcessesByName("DrRacket")[0];
                 client.SetPresence(rp);
                 windowName = racketProcess.MainWindowTitle;
@@ -49,13 +56,15 @@ public class DrRacketRpc
                     details = "Closing DrRacket";
                 }
                 client.UpdateDetails(details);
+                client.UpdateStartTime(drRacketOpened);
             }
             else
             {
+                drRacketIsOpen = false;
                 client.ClearPresence();
             }
 
-            Task.Delay(10000).GetAwaiter().GetResult();
+            Task.Delay(1000).GetAwaiter().GetResult();
         }
     }
 }
