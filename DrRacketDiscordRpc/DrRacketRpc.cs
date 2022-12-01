@@ -5,6 +5,8 @@ public class DrRacketRpc
 {
     static DiscordRpcClient? client;
     static RichPresence? rp;
+    static string windowName;
+    static string details;
     public static void Main()
 
     {
@@ -25,7 +27,28 @@ public class DrRacketRpc
             {
                 Process racketProcess = Process.GetProcessesByName("DrRacket")[0];
                 client.SetPresence(rp);
-                Console.WriteLine(racketProcess.MainWindowTitle);
+                windowName = racketProcess.MainWindowTitle;
+                if (windowName.StartsWith("DrRacket"))
+                {
+                    details = "Starting DrRacket";
+                }
+                else if (windowName.EndsWith("- DrRacket") || windowName.EndsWith("- DrRacket*"))
+                {
+                    string[] splitName = windowName.Split(" - ");
+                    if (splitName[0].Equals("Untitled"))
+                    {
+                        details = "Editing a file";
+                    }
+                    else
+                    {
+                        details = "Editing " + splitName[0];
+                    }
+                }
+                else if (windowName.Equals("Warning"))
+                {
+                    details = "Closing DrRacket";
+                }
+                client.UpdateDetails(details);
             }
             else
             {
