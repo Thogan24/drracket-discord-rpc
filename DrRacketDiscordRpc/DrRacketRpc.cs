@@ -8,7 +8,7 @@ public class DrRacketRpc
     public static void Main()
 
     {
-        client = new DiscordRpcClient("");
+        client = new DiscordRpcClient("1047212817427726419");
         client.Initialize();
         rp = new RichPresence
         {
@@ -19,7 +19,6 @@ public class DrRacketRpc
             }
         };
         rp.Details = "Editing File";
-        client.SetPresence(rp);
         while (true)
         {
             if (Process.GetProcessesByName("DrRacket").Length > 0)
@@ -30,11 +29,10 @@ public class DrRacketRpc
             }
             else
             {
-
+                client.ClearPresence();
             }
 
             Task.Delay(10000).GetAwaiter().GetResult();
         }
     }
 }
-
