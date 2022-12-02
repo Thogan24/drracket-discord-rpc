@@ -1,5 +1,7 @@
 ﻿using DiscordRPC;
+using Microsoft.Win32;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 public class DrRacketRpc
 {
@@ -12,6 +14,7 @@ public class DrRacketRpc
 
     public static void Main()
     {
+        AddToWindowsStartup();
         client = new DiscordRpcClient("1047212817427726419");
         client.Initialize();
         rp = new RichPresence
@@ -22,12 +25,11 @@ public class DrRacketRpc
                 LargeImageText = "DrRacket",
             }
         };
-        rp.Details = "Editing File";
         while (true)
         {
             if (Process.GetProcessesByName("DrRacket").Length > 0)
             {
-                if(!drRacketIsOpen)
+                if (!drRacketIsOpen)
                 {
                     drRacketOpened = DateTime.UtcNow;
                     drRacketIsOpen = true;
@@ -65,6 +67,17 @@ public class DrRacketRpc
             }
 
             Task.Delay(1000).GetAwaiter().GetResult();
+        }
+    }
+
+    static void AddToWindowsStartup()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            string startUpKeyPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+            string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(startUpKeyPath, true);
+            registryKey?.SetValue("DrRacketRPC", executablePath);
         }
     }
 }
