@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>DrRacketRpc</StartupObject>
+    <StartupObject>DrRacketDiscordRPC.DrRacketRpc</StartupObject>
     <Product>DrRacket Discord RPC</Product>
     <Description> Discord RPC for DrRacket</Description>
     <Company>Tyler Hogan and Krish Arora</Company>
