@@ -18,6 +18,14 @@ namespace DrRacketDiscordRPC
 
         public static void Main()
         {
+            foreach (Process process in Process.GetProcessesByName("DrRacketDiscordRpc"))
+            {
+                if (process.Id != Environment.ProcessId)
+                {
+                    process.Kill();
+                }
+            }
+            
             AddToWindowsStartup();
             client = new DiscordRpcClient("1047212817427726419");
             client.Initialize();
@@ -78,9 +86,11 @@ namespace DrRacketDiscordRPC
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 string startUpKeyPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-                string executablePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+#pragma warning disable CS8604 // Possible null reference argument.
+                string? executablePath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
                 RegistryKey? registryKey = Registry.CurrentUser.OpenSubKey(startUpKeyPath, true);
                 registryKey?.SetValue("DrRacketRPC", executablePath);
+#pragma warning restore CS8604 // Possible null reference argument.
             }
         }
     }
